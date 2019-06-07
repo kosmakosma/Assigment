@@ -15,8 +15,6 @@
             <MenuItem Header="File">
                 <MenuItem Header="Open Image" Command="{Binding LoadImageCommand}" />
                 <Separator />
-                <MenuItem Header="Save Image" Command="{Binding SaveImageCommand}"/>
-                <Separator />
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
             </MenuItem>
             <MenuItem Header="Process">

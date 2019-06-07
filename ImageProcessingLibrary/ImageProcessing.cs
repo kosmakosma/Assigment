@@ -113,7 +113,6 @@ namespace ImageProcessingLibrary
 
         public async Task<Bitmap> ToMainColorsAsync()
         {
-            await Task.Delay(4000);
             return await Task.Run(() =>
             {
                 return ToMainColors();

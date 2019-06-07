@@ -20,11 +20,6 @@ namespace ImageProcessingApp.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public MainWindowViewModel()
-        {
-            _imageProcessing = new ImageProcessing();
-        }
-
         private Bitmap _sourceImage;
 
         public Bitmap SourceImage
@@ -62,29 +57,6 @@ namespace ImageProcessingApp.ViewModels
             }
         }
 
-
-        private bool CanProcessImage()
-        {
-            if (SourceImage == null)
-                return false;
-            return true;
-        }
-
-        private void InvokeImageProcess()
-        {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            Bitmap bitmap = _imageProcessing.ToMainColors();
-            stopwatch.Stop();
-            ProcessedImage = bitmap;
-            TimeValue = $"Elapsed = {stopwatch.ElapsedMilliseconds} ms";
-
-        }
-        protected void NotifyPropertyChanged(String info)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
-        }
-
         private Command _loadImageCommand;
 
         public Command LoadImageCommand
@@ -94,37 +66,6 @@ namespace ImageProcessingApp.ViewModels
                 return _loadImageCommand ?? (_loadImageCommand = new Command(() => SelectImageFile(), () => CanSelectImageFile()));
             }
         }
-        private void SelectImageFile()
-        {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.DefaultExt = ".png";
-            // dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
-            Nullable<bool> result = dlg.ShowDialog();
-
-            if (result == true)
-            {
-                _imageProcessing.LoadImage(dlg.FileName);
-                SourceImage = _imageProcessing.Image;
-                ProcessCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-        private bool CanSelectImageFile()
-        {
-            return true;
-        }
-
-        private async Task InvokeImageProcessAsync()
-        {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            Bitmap bitmap = await _imageProcessing.ToMainColorsAsync();
-            stopwatch.Stop();
-            ProcessedImage = bitmap;
-            TimeValue = $"Elapsed = {stopwatch.ElapsedMilliseconds}";
-
-        }
-
 
         private AsyncCommand _processCommandAsync;
 
@@ -136,6 +77,57 @@ namespace ImageProcessingApp.ViewModels
             }
         }
 
+
+        private void InvokeImageProcess()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Bitmap bitmap = _imageProcessing.ToMainColors();
+            stopwatch.Stop();
+            ProcessedImage = bitmap;
+            TimeValue = $"Elapsed = {stopwatch.ElapsedMilliseconds} ms";
+        }
+
+        private async Task InvokeImageProcessAsync()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Bitmap bitmap = await _imageProcessing.ToMainColorsAsync();
+            stopwatch.Stop();
+            ProcessedImage = bitmap;
+            TimeValue = $"Elapsed = {stopwatch.ElapsedMilliseconds} ms";
+        }
+        private bool CanProcessImage()
+        {
+            if (SourceImage == null)
+                return false;
+            return true;
+        }
+
+        private void SelectImageFile()
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|BMP Files (*.bmp)|*.bmp";
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                _imageProcessing = new ImageProcessing(dlg.FileName);
+                SourceImage = _imageProcessing.Image;
+                ProcessCommand.RaiseCanExecuteChanged();
+                ProcessCommandAsync.RaiseCanExecuteChanged();
+            }
+        }
+
+        private bool CanSelectImageFile()
+        {
+            return true;
+        }
+
+        protected void NotifyPropertyChanged(String info)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+        }
 
     }
 }
