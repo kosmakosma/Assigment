@@ -1,0 +1,41 @@
+﻿<Window x:Class="ImageProcessingApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageProcessingApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="750" Width="1200">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Open Image" Command="{Binding LoadImageCommand}" />
+                <Separator />
+                <MenuItem Header="Save Image" Command="{Binding SaveImageCommand}"/>
+                <Separator />
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
+            </MenuItem>
+            <MenuItem Header="Process">
+                <MenuItem Header="Process image async" Command="{Binding ProcessCommandAsync}"  />
+                <Separator />
+                <MenuItem Header="Process image sync"  Command="{Binding ProcessCommand}"/>
+                <Separator />
+            </MenuItem>
+            <MenuItem Header="About"/>
+        </Menu>
+        <Grid DockPanel.Dock="Bottom" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label HorizontalAlignment="Center" Content="Original Image" Grid.Column="0" Grid.Row="0"/>
+            <Label HorizontalAlignment="Center" Content="{Binding TimeValue}" Grid.Column="1" Grid.Row="0"/>
+            <Image Grid.Column="0" Grid.Row="1" Source="{Binding SourceImage}"/>
+            <Image Grid.Column="1" Grid.Row="1" Source="{Binding ProcessedImage}"/>
+        </Grid>
+    </DockPanel>
+</Window>
