@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
@@ -111,6 +112,28 @@ namespace ImageProcessingApp.ViewModels
         private bool CanSelectImageFile()
         {
             return true;
+        }
+
+        private async Task InvokeImageProcessAsync()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Bitmap bitmap = await _imageProcessing.ToMainColorsAsync();
+            stopwatch.Stop();
+            ProcessedImage = bitmap;
+            TimeValue = $"Elapsed = {stopwatch.ElapsedMilliseconds}";
+
+        }
+
+
+        private AsyncCommand _processCommandAsync;
+
+        public AsyncCommand ProcessCommandAsync
+        {
+            get
+            {
+                return _processCommandAsync ?? (_processCommandAsync = new AsyncCommand(async () => await InvokeImageProcessAsync(), () => CanProcessImage()));
+            }
         }
 
 

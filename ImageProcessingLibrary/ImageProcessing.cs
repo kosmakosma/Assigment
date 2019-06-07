@@ -55,8 +55,10 @@ namespace ImageProcessingLibrary
 
         public Bitmap ToMainColors()
         {
-
+            
             BitmapData from = Image.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, Image.PixelFormat);
+
+            
             unsafe
             {
                 int bytesPerPixel = Bitmap.GetPixelFormatSize(Image.PixelFormat) / 8;
@@ -111,6 +113,7 @@ namespace ImageProcessingLibrary
 
         public async Task<Bitmap> ToMainColorsAsync()
         {
+            await Task.Delay(4000);
             return await Task.Run(() =>
             {
                 return ToMainColors();
