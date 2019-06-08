@@ -77,6 +77,21 @@ namespace ImageProcessingApp.ViewModels
             }
         }
 
+        private Command _exitCommand;
+
+        public Command ExitCommand
+        {
+            get
+            {
+                return _exitCommand ?? (_exitCommand = new Command(() => Exit(), () => { return true; }));
+            }
+        }
+
+        private void Exit()
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
 
         private void InvokeImageProcess()
         {
@@ -106,13 +121,13 @@ namespace ImageProcessingApp.ViewModels
 
         private void SelectImageFile()
         {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|BMP Files (*.bmp)|*.bmp";
-            Nullable<bool> result = dlg.ShowDialog();
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|BMP Files (*.bmp)|*.bmp";
+            Nullable<bool> result = dialog.ShowDialog();
 
             if (result == true)
             {
-                _imageProcessing = new ImageProcessing(dlg.FileName);
+                _imageProcessing = new ImageProcessing(dialog.FileName);
                 SourceImage = _imageProcessing.Image;
                 ProcessCommand.RaiseCanExecuteChanged();
                 ProcessCommandAsync.RaiseCanExecuteChanged();
