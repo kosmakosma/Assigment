@@ -16,7 +16,6 @@ namespace ImageProcessingApp.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private ImageProcessing _imageProcessing;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -90,10 +89,10 @@ namespace ImageProcessingApp.ViewModels
 
         private void InvokeImageProcess()
         {
-            _imageProcessing = new ImageProcessing(SourceImage);
+            ImageProcessing imageProcessing = new ImageProcessing(SourceImage);
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            Bitmap bitmap = _imageProcessing.ToMainColors();
+            Bitmap bitmap = imageProcessing.ToMainColors();
             stopwatch.Stop();
             ProcessedImage = bitmap;
             TimeValue = $"Elapsed = {stopwatch.ElapsedMilliseconds} ms";
@@ -101,10 +100,10 @@ namespace ImageProcessingApp.ViewModels
 
         private async Task InvokeImageProcessAsync()
         {
-            _imageProcessing = new ImageProcessing(SourceImage);
+            ImageProcessing imageProcessing = new ImageProcessing(SourceImage);
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            Bitmap bitmap = await _imageProcessing.ToMainColorsAsync();
+            Bitmap bitmap = await imageProcessing.ToMainColorsAsync();
             stopwatch.Stop();
             ProcessedImage = bitmap;
             TimeValue = $"Elapsed = {stopwatch.ElapsedMilliseconds} ms";

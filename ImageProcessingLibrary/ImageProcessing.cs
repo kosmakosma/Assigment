@@ -62,17 +62,12 @@ namespace ImageProcessingLibrary
             unsafe
             {
                 int bytesPerPixel = Bitmap.GetPixelFormatSize(Image.PixelFormat) / 8;
-                int heightInPixels = from.Height;
-                int widthInPixels = from.Width;
 
-                byte* firstPixel = (byte*)from.Scan0;
-
-
-                Parallel.For(0, heightInPixels, y =>
+                Parallel.For(0, from.Height, y =>
                 {
-                    byte* currentLine = firstPixel + (y * from.Stride);
+                    byte* currentLine = (byte*)from.Scan0 + (y * from.Stride);
 
-                    for (int x = 0; x < widthInPixels * bytesPerPixel; x += bytesPerPixel)
+                    for (int x = 0; x < from.Width * bytesPerPixel; x += bytesPerPixel)
                     {
                         switch (GetMaxFromRGB(currentLine[x + 2], currentLine[x + 1], currentLine[x]))
                         {
