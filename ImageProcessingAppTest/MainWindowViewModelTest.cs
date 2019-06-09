@@ -31,9 +31,15 @@ namespace ImageProcessingAppTest
 
 
         [Test]
-        public void TestIfCanExecuteCommandWithoutImage()
+        public void TestIfCanExecuteProcessCommandWithoutImage()
         {
             Assert.False(_viewModel.ProcessCommand.CanExecute(null));
+        }
+
+        [Test]
+        public void TestIfCanExecuteAsyncProcessCommandWithoutImage()
+        {
+            Assert.False(_viewModel.ProcessCommandAsync.CanExecute(null));
         }
 
         [Test]
@@ -85,7 +91,7 @@ namespace ImageProcessingAppTest
 
             _viewModel.ProcessCommand.Execute(null);
 
-            Assert.True(Regex.IsMatch(_viewModel.TimeValue, @"(Elapsed =)[ ][0-9]+[ ](ms)"));
+            Assert.True(Regex.IsMatch(_viewModel.TimeValue, @"(Image Processed in)[ ][0-9]+[ ](ms)"));
 
         }
 

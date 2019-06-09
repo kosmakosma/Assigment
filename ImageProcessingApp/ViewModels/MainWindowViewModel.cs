@@ -95,7 +95,7 @@ namespace ImageProcessingApp.ViewModels
             Bitmap bitmap = imageProcessing.ToMainColors();
             stopwatch.Stop();
             ProcessedImage = bitmap;
-            TimeValue = $"Elapsed = {stopwatch.ElapsedMilliseconds} ms";
+            TimeValue = $"Image Processed in {stopwatch.ElapsedMilliseconds} ms";
         }
 
         private async Task InvokeImageProcessAsync()
@@ -106,7 +106,7 @@ namespace ImageProcessingApp.ViewModels
             Bitmap bitmap = await imageProcessing.ToMainColorsAsync();
             stopwatch.Stop();
             ProcessedImage = bitmap;
-            TimeValue = $"Elapsed = {stopwatch.ElapsedMilliseconds} ms";
+            TimeValue = $"Image Processed in {stopwatch.ElapsedMilliseconds} ms";
         }
         private bool CanProcessImage()
         {
