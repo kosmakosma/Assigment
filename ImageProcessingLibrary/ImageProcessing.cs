@@ -16,9 +16,9 @@ namespace ImageProcessingLibrary
     public class ImageProcessing
     {
 
-        public ImageProcessing(Image image)
+        public ImageProcessing(Bitmap image)
         {
-            Image = new Bitmap(image);
+            Image = image;
         }
 
         public ImageProcessing(string filepath)

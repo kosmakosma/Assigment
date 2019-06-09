@@ -87,14 +87,10 @@ namespace ImageProcessingApp.ViewModels
             }
         }
 
-        private void Exit()
-        {
-            System.Windows.Application.Current.Shutdown();
-        }
-
 
         private void InvokeImageProcess()
         {
+            _imageProcessing = new ImageProcessing(SourceImage);
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             Bitmap bitmap = _imageProcessing.ToMainColors();
@@ -105,6 +101,7 @@ namespace ImageProcessingApp.ViewModels
 
         private async Task InvokeImageProcessAsync()
         {
+            _imageProcessing = new ImageProcessing(SourceImage);
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             Bitmap bitmap = await _imageProcessing.ToMainColorsAsync();
@@ -114,9 +111,9 @@ namespace ImageProcessingApp.ViewModels
         }
         private bool CanProcessImage()
         {
-            if (SourceImage == null)
-                return false;
-            return true;
+            if (SourceImage != null && ProcessCommandAsync.IsTaskFinished)
+                return true;
+            return false;
         }
 
         private void SelectImageFile()
@@ -127,8 +124,7 @@ namespace ImageProcessingApp.ViewModels
 
             if (result == true)
             {
-                _imageProcessing = new ImageProcessing(dialog.FileName);
-                SourceImage = _imageProcessing.Image;
+                SourceImage = new Bitmap(dialog.FileName);
                 ProcessCommand.RaiseCanExecuteChanged();
                 ProcessCommandAsync.RaiseCanExecuteChanged();
             }
@@ -136,12 +132,19 @@ namespace ImageProcessingApp.ViewModels
 
         private bool CanSelectImageFile()
         {
-            return true;
+            if (ProcessCommandAsync.IsTaskFinished)
+                return true;
+            return false;
         }
 
         protected void NotifyPropertyChanged(String info)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+        }
+
+        private void Exit()
+        {
+            System.Windows.Application.Current.Shutdown();
         }
 
     }

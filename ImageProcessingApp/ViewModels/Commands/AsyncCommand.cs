@@ -15,6 +15,8 @@ namespace ImageProcessingApp.ViewModels.Commands
 
         protected bool _isTaskFinished;
 
+        public bool IsTaskFinished { get { return _isTaskFinished; } }
+
         public async void Execute(object parameter)
         {
             _isTaskFinished = false;
